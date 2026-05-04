@@ -1,0 +1,443 @@
+<!DOCTYPE html><html lang="ja"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIKU | 会計事務所専用 面談予約チャットBot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;800&amp;family=Noto+Serif+JP:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Noto Sans JP', sans-serif; }
+        html { scroll-behavior: smooth; }
+        .font-serif { font-family: 'Noto Serif JP', serif; }
+        .hero-bg { background: #1b1b2f; }
+        .soft-shadow { box-shadow: 0 2px 16px rgba(0,0,0,0.05); }
+        .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.07); }
+        .accent { color: #d85c27; }
+        .bg-accent { background-color: #d85c27; }
+        .bg-accent-hover:hover { background-color: #c04f1f; }
+        .bg-warm { background-color: #faf8f6; }
+        .border-warm { border-color: #ede8e3; }
+        .text-navy { color: #1b1b2f; }
+        .bg-navy { background-color: #1b1b2f; }
+        .divider { width: 40px; height: 3px; background: #d85c27; }
+        .pulse-btn { animation: gentle-pulse 2.5s infinite; }
+        @keyframes gentle-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(216,92,39,0.25); }
+            50% { box-shadow: 0 0 0 10px rgba(216,92,39,0); }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-700">
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full bg-white border-b border-gray-100 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-navy flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">K</span>
+                </div>
+                <span class="font-bold text-lg text-navy">KIKU</span>
+                <span class="text-gray-400 text-xs ml-1 hidden sm:inline border-l border-gray-200 pl-3">会計事務所向け面談予約Bot</span>
+            </div>
+            <a href="#cta-final" class="hidden sm:inline-block bg-accent text-white text-sm font-medium px-5 py-2.5 hover:opacity-90 transition">無料トライアル</a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero-bg pt-28 pb-20 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <p class="text-orange-400 font-medium text-sm mb-4 tracking-wide">AI-POWERED APPOINTMENT BOT</p>
+                    <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-white leading-tight mb-6">
+                        見込み顧客の<br>
+                        「ちょっと聞きたい」を、<br>
+                        <span class="text-orange-300">初回面談の予約</span>に変える。
+                    </h1>
+                    <p class="text-gray-300 text-sm sm:text-base max-w-md mb-8 leading-relaxed">
+                        問い合わせフォームの代わりにチャットを設置するだけ。見込み顧客の疑問に24時間対応しながら、面談予約まで完了します。
+                    </p>
+                    <a href="#cta-final" class="pulse-btn inline-block bg-accent text-white font-medium px-7 py-3.5 text-sm hover:opacity-90 transition">2週間無料で試してみる →</a>
+                    <p class="text-gray-500 text-xs mt-4">先着5事務所限定 ｜ 初期費用なし ｜ クレカ不要</p>
+                </div>
+                <div class="hidden md:block">
+                    <div class="bg-white/5 border border-white/10 rounded-lg p-6">
+                        <div class="space-y-4">
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-orange-300 text-xs font-bold">AI</span>
+                                </div>
+                                <div class="bg-white/10 rounded-lg rounded-tl-none px-4 py-3">
+                                    <p class="text-gray-200 text-sm">こんにちは。顧問税理士のご検討でしょうか？どんなことでもお気軽にどうぞ。</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3 justify-end">
+                                <div class="bg-orange-500/20 rounded-lg rounded-tr-none px-4 py-3">
+                                    <p class="text-gray-200 text-sm">法人化を考えていて、顧問料の相場が知りたいです</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-orange-300 text-xs font-bold">AI</span>
+                                </div>
+                                <div class="bg-white/10 rounded-lg rounded-tl-none px-4 py-3">
+                                    <p class="text-gray-200 text-sm">法人化のご検討ですね。当事務所では月額2万円〜が目安です。よろしければ、一度お話ししませんか？来週のご都合をお伺いできますか？</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Numbers -->
+    <section class="py-10 bg-white border-b border-gray-100">
+        <div class="max-w-4xl mx-auto px-4 grid grid-cols-3 gap-6 text-center">
+            <div>
+                <p class="text-3xl sm:text-4xl font-bold text-navy">97<span class="text-lg accent">%</span></p>
+                <p class="text-gray-400 text-xs sm:text-sm mt-1">フォームで離脱する割合</p>
+            </div>
+            <div>
+                <p class="text-3xl sm:text-4xl font-bold text-navy">2<span class="text-lg accent">倍+</span></p>
+                <p class="text-gray-400 text-xs sm:text-sm mt-1">Bot導入後の面談予約率</p>
+            </div>
+            <div>
+                <p class="text-3xl sm:text-4xl font-bold text-navy">24<span class="text-lg accent">h</span></p>
+                <p class="text-gray-400 text-xs sm:text-sm mt-1">年中無休で問い合わせ対応</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-14">
+                <div class="divider mb-4"></div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-navy">サイトは見られている。<br>なのに、問い合わせが来ない。</h2>
+                <p class="text-gray-500 mt-3 text-sm max-w-lg">会計事務所のWebサイトには共通する課題があります。</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="border-l-2 border-orange-400 pl-5 py-2">
+                    <h3 class="font-semibold text-navy mb-2 text-base">フォームのハードルが高い</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">「顧問料の目安だけ知りたい」段階で、会社名や電話番号の入力は重い。フォームを開いても送信する人はわずか2〜3%です。</p>
+                </div>
+                <div class="border-l-2 border-orange-400 pl-5 py-2">
+                    <h3 class="font-semibold text-navy mb-2 text-base">経営者が動くのは営業時間外</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">「税理士 変更」「法人化 タイミング」の検索は夜と週末に集中します。日中は本業で忙しく、電話なんてかけられません。</p>
+                </div>
+                <div class="border-l-2 border-orange-400 pl-5 py-2">
+                    <h3 class="font-semibold text-navy mb-2 text-base">繁忙期に電話を取れない</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">確定申告期や決算期はスタッフも手一杯。折り返した頃には、他の事務所と話が進んでいます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="py-20 px-4 bg-warm">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-14">
+                <div class="divider mb-4"></div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-navy">KIKUが解決すること</h2>
+                <p class="text-gray-500 mt-3 text-sm max-w-lg">フォームを置き換えるだけ。3つのステップで面談予約に変わります。</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-9 h-9 bg-navy text-white rounded flex items-center justify-center font-bold text-sm">01</span>
+                        <h3 class="font-semibold text-navy">気軽に質問</h3>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">サイト訪問者にチャットが表示。「何かお困りですか？」と声をかけ、匿名のまま会話を始められます。</p>
+                </div>
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-9 h-9 bg-navy text-white rounded flex items-center justify-center font-bold text-sm">02</span>
+                        <h3 class="font-semibold text-navy">状況を整理</h3>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">業種・売上規模・相談内容をAIが一問ずつヒアリング。会話の流れで自然にニーズを明確にします。</p>
+                </div>
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-9 h-9 bg-navy text-white rounded flex items-center justify-center font-bold text-sm">03</span>
+                        <h3 class="font-semibold text-navy">面談を予約</h3>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">空き日時を提示し、その場で初回面談を確定。Googleカレンダーに自動登録されます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-14">
+                <div class="divider mb-4"></div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-navy">活用シーン</h2>
+                <p class="text-gray-500 mt-3 text-sm max-w-lg">監査法人から個人事務所まで、さまざまな規模でご活用いただけます。</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-5">
+                <div class="bg-warm rounded-lg p-6 border border-warm card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2 h-2 bg-accent rounded-full"></span>
+                        <p class="accent font-medium text-xs">平日22時 ─ 法人化を検討中の個人事業主</p>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">「法人化 いつ」で検索してサイトへ。チャットで法人化のタイミング目安や届出の流れを確認し、「自分の場合どうなるか聞きたい」と来週の面談を予約。</p>
+                </div>
+                <div class="bg-warm rounded-lg p-6 border border-warm card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2 h-2 bg-accent rounded-full"></span>
+                        <p class="accent font-medium text-xs">日曜日 ─ 顧問税理士の変更を考える経営者</p>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">現在の税理士に不満はあるが、電話で相談するほどでもない。チャットで「乗り換えの流れ」と「引き継ぎのタイミング」を確認し、面談へ。</p>
+                </div>
+                <div class="bg-warm rounded-lg p-6 border border-warm card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2 h-2 bg-accent rounded-full"></span>
+                        <p class="accent font-medium text-xs">確定申告期 ─ 初めて税理士を探すフリーランス</p>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">「確定申告 何から」で検索。チャットで青色申告のメリットや顧問料の目安を確認。「一度話を聞きたい」とオンライン面談を予約。</p>
+                </div>
+                <div class="bg-warm rounded-lg p-6 border border-warm card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2 h-2 bg-accent rounded-full"></span>
+                        <p class="accent font-medium text-xs">決算期 ─ 事務所が電話に出られないとき</p>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">所内が多忙で電話に出られない。でもAIが24時間対応しているので取りこぼさない。朝にはカレンダーに面談が入っている。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-20 px-4 bg-navy">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-14">
+                <div class="divider mb-4"></div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-white">KIKUの特長</h2>
+                <p class="text-gray-400 mt-3 text-sm">会計事務所の業務実態に合わせて設計しています。</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-5">
+                <div class="bg-white/5 border border-white/10 rounded-lg p-6">
+                    <p class="text-orange-400 text-xs font-medium mb-3">01</p>
+                    <h3 class="font-semibold text-white mb-2 text-sm">繁忙期でも取りこぼさない</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">確定申告期・決算期で電話に出られなくても、AIが対応。問い合わせのピークを逃しません。</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-lg p-6">
+                    <p class="text-orange-400 text-xs font-medium mb-3">02</p>
+                    <h3 class="font-semibold text-white mb-2 text-sm">事前ヒアリングで面談の質が向上</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">業種・売上規模・相談内容を事前に把握。「話を聞いたけど合わなかった」を減らせます。</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-lg p-6">
+                    <p class="text-orange-400 text-xs font-medium mb-3">03</p>
+                    <h3 class="font-semibold text-white mb-2 text-sm">Googleカレンダー自動連携</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">新しいシステムは不要。今のカレンダーにそのまま面談予約が入ります。</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-lg p-6">
+                    <p class="text-orange-400 text-xs font-medium mb-3">04</p>
+                    <h3 class="font-semibold text-white mb-2 text-sm">匿名で始められる安心設計</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">予約確定まで個人情報の入力は不要。「まだ決めていない」方にも心理的ハードルを下げます。</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-lg p-6">
+                    <p class="text-orange-400 text-xs font-medium mb-3">05</p>
+                    <h3 class="font-semibold text-white mb-2 text-sm">ニーズがデータで見える</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">「法人化の相談が多い」「記帳代行の料金を聞く人が多い」など、見込み客の傾向が可視化されます。</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-lg p-6">
+                    <p class="text-orange-400 text-xs font-medium mb-3">06</p>
+                    <h3 class="font-semibold text-white mb-2 text-sm">タグ1行で導入完了</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">WordPress・Wix・STUDIOなど対応。IT担当がいなくても最短翌営業日に稼働します。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Before/After -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-3xl mx-auto">
+            <div class="mb-12">
+                <div class="divider mb-4"></div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-navy">導入による変化</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 rounded-lg p-6 border border-gray-100">
+                    <p class="text-gray-400 font-medium text-xs mb-4 uppercase tracking-wide">Before ─ フォームのみ</p>
+                    <div class="space-y-3 text-gray-500 text-sm">
+                        <div class="flex justify-between border-b border-gray-100 pb-2">
+                            <span>月間サイト訪問</span><span class="font-medium text-navy">500人</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-2">
+                            <span>フォーム送信</span><span class="font-medium text-navy">5件</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-2">
+                            <span>面談に来る</span><span class="font-medium text-navy">3件</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>顧問契約</span><span class="font-medium text-navy">1〜2件</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-warm rounded-lg p-6 border-2 border-orange-200">
+                    <p class="accent font-medium text-xs mb-4 uppercase tracking-wide">After ─ KIKU導入後</p>
+                    <div class="space-y-3 text-gray-600 text-sm">
+                        <div class="flex justify-between border-b border-orange-100 pb-2">
+                            <span>月間サイト訪問</span><span class="font-bold text-navy">500人（同じ）</span>
+                        </div>
+                        <div class="flex justify-between border-b border-orange-100 pb-2">
+                            <span>チャットで会話</span><span class="font-bold accent">40〜60件</span>
+                        </div>
+                        <div class="flex justify-between border-b border-orange-100 pb-2">
+                            <span>面談予約</span><span class="font-bold accent">10〜15件</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>顧問契約</span><span class="font-bold accent">4〜6件</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-gray-400 text-xs mt-5">※数値は導入事例の平均的な改善幅をもとにしたイメージです</p>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="py-20 px-4 bg-warm">
+        <div class="max-w-2xl mx-auto text-center">
+            <div class="divider mx-auto mb-4"></div>
+            <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-navy mb-4">まずは2週間、無料で。</h2>
+            <p class="text-gray-500 text-sm mb-10">効果を確認してからご検討いただけます。自動課金は一切ありません。</p>
+
+            <div class="bg-white rounded-lg p-8 sm:p-10 text-left max-w-sm mx-auto border border-gray-200 soft-shadow">
+                <p class="accent font-semibold text-xs mb-1 tracking-wide uppercase">Free Trial</p>
+                <h3 class="text-navy text-3xl font-bold mb-1">¥0<span class="text-sm font-normal text-gray-400 ml-2">/ 2週間</span></h3>
+                <p class="text-gray-400 text-xs mb-6">本導入の料金はトライアル後にご案内</p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 flex-shrink-0 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        チャットBot設置
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 flex-shrink-0 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        貴事務所のサービスに合わせた初期設定
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 flex-shrink-0 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        Googleカレンダー連携
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 flex-shrink-0 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        管理画面・レポート
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 flex-shrink-0 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        A/Bテスト機能
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 flex-shrink-0 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        導入サポート付き
+                    </li>
+                </ul>
+                <a href="#cta-final" class="block w-full bg-accent text-white text-center font-medium py-4 hover:opacity-90 transition">無料で試してみる</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section id="cta-final" class="py-20 px-4 bg-navy">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-white mb-4">見込み顧客との接点を、<br class="sm:hidden">もっとシンプルに。</h2>
+            <p class="text-gray-400 text-sm mb-10">2週間の無料トライアルで、問い合わせ数の変化を実感してください。</p>
+
+            <div class="bg-white rounded-lg p-8 max-w-sm mx-auto">
+                <form action="#" method="POST" class="space-y-4">
+                    <input type="text" placeholder="事務所名" class="w-full px-4 py-3 border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
+                    <input type="text" placeholder="ご担当者名" class="w-full px-4 py-3 border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
+                    <input type="email" placeholder="メールアドレス" class="w-full px-4 py-3 border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
+                    <input type="tel" placeholder="電話番号（任意）" class="w-full px-4 py-3 border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
+                    <button type="submit" class="w-full bg-accent text-white font-medium py-4 hover:opacity-90 transition">無料で試してみる</button>
+                </form>
+                <p class="text-gray-400 text-xs mt-4">30秒で完了 ｜ 先着5事務所限定</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-2xl mx-auto">
+            <div class="mb-14">
+                <div class="divider mb-4"></div>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-navy">よくあるご質問</h2>
+            </div>
+
+            <div class="space-y-0 border-t border-gray-200">
+                <details class="group border-b border-gray-200">
+                    <summary class="flex items-center justify-between py-5 cursor-pointer">
+                        <span class="font-medium text-navy text-sm sm:text-base pr-4">AIが税務の質問に答えて問題ないですか？</span>
+                        <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="pb-5 text-gray-500 text-sm leading-relaxed">AIは税務判断を行いません。貴事務所のサービス内容・料金・対応範囲といった「一般的なご案内」を会話形式でお伝えし、具体的な判断は面談で確認する流れです。税理士法に抵触しない範囲で設計しますのでご安心ください。</div>
+                </details>
+
+                <details class="group border-b border-gray-200">
+                    <summary class="flex items-center justify-between py-5 cursor-pointer">
+                        <span class="font-medium text-navy text-sm sm:text-base pr-4">顧問料を公開していないのですが使えますか？</span>
+                        <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="pb-5 text-gray-500 text-sm leading-relaxed">使えます。料金を聞かれた場合に「月額◯万円〜が目安です。詳しくは面談でお見積りします」のように案内する設定が可能です。出す・出さないは事務所ごとに調整します。</div>
+                </details>
+
+                <details class="group border-b border-gray-200">
+                    <summary class="flex items-center justify-between py-5 cursor-pointer">
+                        <span class="font-medium text-navy text-sm sm:text-base pr-4">所長1人の小規模事務所ですが意味はありますか？</span>
+                        <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="pb-5 text-gray-500 text-sm leading-relaxed">むしろ少人数の事務所ほど効果的です。電話に出る人がいない時間帯が多いほど、24時間対応のAIの価値は大きくなります。</div>
+                </details>
+
+                <details class="group border-b border-gray-200">
+                    <summary class="flex items-center justify-between py-5 cursor-pointer">
+                        <span class="font-medium text-navy text-sm sm:text-base pr-4">既存の顧問先に影響はありますか？</span>
+                        <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="pb-5 text-gray-500 text-sm leading-relaxed">ありません。KIKUは新規の問い合わせ対応に特化したツールです。既存顧問先とのやり取りには一切関与しません。</div>
+                </details>
+
+                <details class="group border-b border-gray-200">
+                    <summary class="flex items-center justify-between py-5 cursor-pointer">
+                        <span class="font-medium text-navy text-sm sm:text-base pr-4">導入にどのくらい時間がかかりますか？</span>
+                        <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="pb-5 text-gray-500 text-sm leading-relaxed">最短翌営業日に稼働可能です。サイトにタグを1行追加するだけなので、ITの知識は不要です。会話フローの初期設定はこちらで行います。</div>
+                </details>
+
+                <details class="group border-b border-gray-200">
+                    <summary class="flex items-center justify-between py-5 cursor-pointer">
+                        <span class="font-medium text-navy text-sm sm:text-base pr-4">トライアル後に自動で課金されますか？</span>
+                        <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="pb-5 text-gray-500 text-sm leading-relaxed">されません。2週間のトライアル終了後、継続をご希望の場合のみ料金プランをご案内します。クレジットカードの事前登録も不要です。</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-navy py-10 px-4 border-t border-white/10">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-7 h-7 bg-white/10 flex items-center justify-center">
+                    <span class="text-white font-bold text-xs">K</span>
+                </div>
+                <span class="font-semibold text-white">KIKU</span>
+                <span class="text-gray-500 text-xs ml-2">面談予約チャットBot</span>
+            </div>
+            <p class="text-gray-500 text-xs">© 2025 KIKU. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+
+</body></html>

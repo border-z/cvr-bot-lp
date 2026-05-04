@@ -1,0 +1,396 @@
+<!DOCTYPE html><html lang="ja"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIKU | 美容クリニック専用 予約獲得チャットBot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;800&amp;family=Noto+Serif+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Noto Sans JP', sans-serif; }
+        html { scroll-behavior: smooth; }
+        .font-serif { font-family: 'Noto Serif JP', serif; }
+        .hero-bg { background: linear-gradient(180deg, #fff 0%, #fdf8f6 100%); }
+        .soft-shadow { box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
+        .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
+        .accent-pink { color: #c4897a; }
+        .bg-accent-pink { background-color: #c4897a; }
+        .bg-accent-pink-light { background-color: #faf5f3; }
+        .border-accent { border-color: #e8d5cf; }
+        .pulse-btn { animation: gentle-pulse 2.5s infinite; }
+        @keyframes gentle-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(196,137,122,0.3); }
+            50% { box-shadow: 0 0 0 10px rgba(196,137,122,0); }
+        }
+        .step-line { position: relative; }
+        .step-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -1rem;
+            width: 2rem;
+            height: 1px;
+            background: #e8d5cf;
+        }
+        @media(max-width:767px) {
+            .step-line::after { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-700">
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-accent-pink flex items-center justify-center">
+                    <span class="text-white font-semibold text-sm">K</span>
+                </div>
+                <span class="font-semibold text-lg text-gray-800">KIKU</span>
+                <span class="text-gray-400 text-xs ml-2 hidden sm:inline">for Beauty Clinics</span>
+            </div>
+            <a href="#cta-final" class="hidden sm:inline-block bg-accent-pink text-white text-sm font-medium px-5 py-2 rounded-full hover:opacity-90 transition">無料で始める</a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero-bg pt-32 pb-24 px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <p class="accent-pink font-medium text-sm mb-5 tracking-wide">美容クリニック専用 AIチャットBot</p>
+            <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-800 leading-tight mb-6">
+                「ちょっと聞きたい」が<br>
+                <span class="accent-pink">カウンセリング予約</span>に変わる
+            </h1>
+            <p class="text-gray-500 text-base sm:text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+                問い合わせフォームの代わりに、チャットを置くだけ。<br>
+                会話の流れで予約まで完了し、Googleカレンダーに自動で入ります。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#cta-final" class="pulse-btn bg-accent-pink text-white font-medium px-8 py-4 rounded-full text-base hover:opacity-90 transition">2週間無料で試してみる</a>
+            </div>
+            <p class="text-gray-400 text-xs mt-4">先着5院限定 ・ 初期費用なし ・ クレカ不要</p>
+        </div>
+    </section>
+
+    <!-- Numbers -->
+    <section class="py-10 bg-white border-y border-gray-50">
+        <div class="max-w-3xl mx-auto px-4 grid grid-cols-3 gap-4 text-center">
+            <div>
+                <p class="text-2xl sm:text-3xl font-bold text-gray-800">97%</p>
+                <p class="text-gray-400 text-xs sm:text-sm mt-1">フォームで離脱する割合</p>
+            </div>
+            <div>
+                <p class="text-2xl sm:text-3xl font-bold text-gray-800">2<span class="text-lg">倍</span>+</p>
+                <p class="text-gray-400 text-xs sm:text-sm mt-1">Bot導入後の予約率</p>
+            </div>
+            <div>
+                <p class="text-2xl sm:text-3xl font-bold text-gray-800">24<span class="text-lg">h</span></p>
+                <p class="text-gray-400 text-xs sm:text-sm mt-1">年中無休で予約受付</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-14">
+                <p class="accent-pink font-medium text-sm mb-2">こんなお悩みありませんか？</p>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-gray-800">サイトは見られているのに、予約が入らない</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-accent-pink-light rounded-2xl p-6">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-4 soft-shadow">
+                        <span class="text-lg">😮‍💨</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">フォームが面倒で離脱される</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">「料金だけ知りたかった」という方に、名前・住所・電話番号を入力してもらうのはハードルが高い。結果、97%がフォームを開いても送信しません。</p>
+                </div>
+                <div class="bg-accent-pink-light rounded-2xl p-6">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-4 soft-shadow">
+                        <span class="text-lg">🤫</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">電話したくない方が多い</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">美容施術を検討していることは、周りに言いにくい。電話は聞かれるし、LINEは友だち追加がハードル。「まず匿名で聞きたい」のが本音です。</p>
+                </div>
+                <div class="bg-accent-pink-light rounded-2xl p-6">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-4 soft-shadow">
+                        <span class="text-lg">🌙</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">夜の検索を取りこぼす</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">「二重 費用」「シミ取り 痛い？」の検索は、仕事終わりの夜がピーク。翌朝まで待つ間に、他院のサイトに流れてしまいます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="py-20 px-4 bg-accent-pink-light">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-14">
+                <p class="accent-pink font-medium text-sm mb-2">KIKUの仕組み</p>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-gray-800">気軽な質問が、自然と予約につながる</h2>
+                <p class="text-gray-500 mt-3 text-sm">フォームを置き換えるだけ。3ステップでカウンセリング予約に。</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center step-line">
+                    <div class="w-12 h-12 bg-white border-2 border-accent rounded-full flex items-center justify-center mx-auto mb-5 soft-shadow">
+                        <span class="accent-pink font-bold text-lg">1</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">まずは気軽に質問</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">サイトを訪れた方に「気になることはありますか？」とチャットが表示。LINEに話しかける感覚で使えます。</p>
+                </div>
+                <div class="text-center step-line">
+                    <div class="w-12 h-12 bg-white border-2 border-accent rounded-full flex items-center justify-center mx-auto mb-5 soft-shadow">
+                        <span class="accent-pink font-bold text-lg">2</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">AIが丁寧にご案内</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">施術の特徴・ダウンタイム・費用感を、一問一答形式で自然に伝えます。「接客上手なカウンセラー」のイメージです。</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-white border-2 border-accent rounded-full flex items-center justify-center mx-auto mb-5 soft-shadow">
+                        <span class="accent-pink font-bold text-lg">3</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">その場で予約完了</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">空いている日時を提示し、そのまま予約確定。Googleカレンダーに自動で登録されるので、スタッフの手間はゼロです。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scenario -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <p class="accent-pink font-medium text-sm mb-2">こんな場面で</p>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-gray-800">高須クリニック様のような<br class="sm:hidden">大手院でも効果的</h2>
+                <p class="text-gray-500 mt-3 text-sm">200種類以上の施術メニューがあっても、AIが最適な案内をします。</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-5">
+                <div class="bg-white rounded-2xl p-6 border border-gray-100 soft-shadow">
+                    <p class="accent-pink font-medium text-xs mb-2">夜23時 ─ 仕事帰りの30代女性</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">「目の下のクマが気になる」と検索。チャットで「切らない脂肪取り」の説明を受け、¥550,000の費用感とダウンタイムを確認。納得して翌週のカウンセリングを予約。</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 border border-gray-100 soft-shadow">
+                    <p class="accent-pink font-medium text-xs mb-2">昼休み ─ オフィスの40代男性</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">「ほうれい線 ヒアルロン酸」で検索。電話は周りに聞かれるけど、チャットなら無音で完結。ヒアルロン酸¥110,000の情報を確認し、名古屋院に予約。</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 border border-gray-100 soft-shadow">
+                    <p class="accent-pink font-medium text-xs mb-2">Instagram広告から流入</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">二重埋没法の広告に興味を持ってサイトへ。フォームを見て「面倒…」と思う前に、チャットが話しかけて離脱を防止。そのまま銀座院の予約へ。</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 border border-gray-100 soft-shadow">
+                    <p class="accent-pink font-medium text-xs mb-2">他院と比較検討中</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">3院のサイトを見比べている方は、「一番早く疑問を解消してくれたクリニック」に予約を入れます。即レスできるAIが差をつけます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-20 px-4 bg-accent-pink-light">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-14">
+                <p class="accent-pink font-medium text-sm mb-2">選ばれる理由</p>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-gray-800">クリニック運営に寄り添う設計</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-5">
+                <div class="card-hover bg-white rounded-2xl p-7 border border-gray-100">
+                    <h3 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-accent-pink-light rounded-lg flex items-center justify-center text-sm">🕐</span>
+                        24時間365日、受付します
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">受付スタッフが帰ったあとも、AIが施術の説明から予約まで対応。朝出勤したら、夜のうちに予約が入っています。</p>
+                </div>
+                <div class="card-hover bg-white rounded-2xl p-7 border border-gray-100">
+                    <h3 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-accent-pink-light rounded-lg flex items-center justify-center text-sm">📅</span>
+                        Googleカレンダーに自動連携
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">新しいシステムを覚える必要はありません。今お使いのカレンダーにそのまま予約が入るので、業務フローを変えずに導入できます。</p>
+                </div>
+                <div class="card-hover bg-white rounded-2xl p-7 border border-gray-100">
+                    <h3 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-accent-pink-light rounded-lg flex items-center justify-center text-sm">🧪</span>
+                        声かけを自動で最適化
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">「どんな声かけが予約に繋がるか」をAIが自動でA/Bテスト。使い続けるほど予約率が上がっていきます。</p>
+                </div>
+                <div class="card-hover bg-white rounded-2xl p-7 border border-gray-100">
+                    <h3 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-accent-pink-light rounded-lg flex items-center justify-center text-sm">🔒</span>
+                        匿名のまま使える安心設計
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">予約確定の直前まで、個人情報の入力は不要。「美容クリニックに問い合わせた」という心理的ハードルを下げます。</p>
+                </div>
+                <div class="card-hover bg-white rounded-2xl p-7 border border-gray-100">
+                    <h3 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-accent-pink-light rounded-lg flex items-center justify-center text-sm">📊</span>
+                        管理画面で反応が見える
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">会話数・予約率・人気メニュー・離脱ポイントをひと目で確認。広告費をどこに使うべきか、データで判断できます。</p>
+                </div>
+                <div class="card-hover bg-white rounded-2xl p-7 border border-gray-100">
+                    <h3 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-accent-pink-light rounded-lg flex items-center justify-center text-sm">⚡</span>
+                        タグを1行貼るだけで導入
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">WordPress・Wix・STUDIOなど、どんなサイトにも対応。最短翌営業日に稼働します。IT知識は不要です。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-2xl mx-auto text-center">
+            <div class="bg-accent-pink-light rounded-2xl p-8">
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
+                    米国の調査では、問い合わせフォームをチャットBotに置き換えた企業で、コンバージョン率が<span class="font-bold accent-pink">平均2倍以上</span>に改善したと報告されています。<br>特にカウンセリング型のビジネスでは、「気軽に相談できる」体験が予約の決め手になります。
+                </p>
+                <p class="text-gray-400 text-xs">出典：Drift "State of Conversational Marketing"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-2xl mx-auto text-center">
+            <p class="accent-pink font-medium text-sm mb-2">料金について</p>
+            <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">まずは2週間、無料でお試しください</h2>
+            <p class="text-gray-500 text-sm mb-10">効果を実感してから、ご検討いただけます。</p>
+
+            <div class="bg-white rounded-3xl p-8 sm:p-10 text-left max-w-sm mx-auto border-2 border-accent soft-shadow">
+                <p class="accent-pink font-medium text-xs mb-1 tracking-wide">FREE TRIAL</p>
+                <h3 class="text-gray-800 text-3xl font-bold mb-1">¥0<span class="text-sm font-normal text-gray-400 ml-1">/ 2週間</span></h3>
+                <p class="text-gray-400 text-xs mb-6">本導入の料金はトライアル後にご案内</p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 accent-pink flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        チャットBot設置
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 accent-pink flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        貴院の施術メニューに合わせた初期設定
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 accent-pink flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        Googleカレンダー連携
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 accent-pink flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        管理画面・レポート
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 accent-pink flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        A/Bテスト機能
+                    </li>
+                    <li class="flex items-center gap-3 text-gray-600 text-sm">
+                        <svg class="w-4 h-4 accent-pink flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                        導入サポート付き
+                    </li>
+                </ul>
+                <a href="#cta-final" class="block w-full bg-accent-pink text-white text-center font-medium py-4 rounded-full hover:opacity-90 transition">無料で試してみる</a>
+            </div>
+
+            <p class="mt-5 text-gray-400 text-xs">自動課金なし ・ クレジットカード不要</p>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section id="cta-final" class="py-20 px-4 bg-accent-pink-light">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">「気になる」を、予約に変えませんか？</h2>
+            <p class="text-gray-500 text-sm mb-10">2週間の無料トライアルで、フォームとの予約率の違いを実感してください。</p>
+
+            <div class="bg-white rounded-2xl p-8 max-w-sm mx-auto soft-shadow">
+                <form action="#" method="POST" class="space-y-4">
+                    <input type="text" placeholder="クリニック名" class="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
+                    <input type="text" placeholder="ご担当者名" class="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
+                    <input type="email" placeholder="メールアドレス" class="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
+                    <input type="tel" placeholder="電話番号（任意）" class="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
+                    <button type="submit" class="w-full bg-accent-pink text-white font-medium py-4 rounded-full hover:opacity-90 transition">無料で試してみる</button>
+                </form>
+                <p class="text-gray-400 text-xs mt-4">30秒で完了 ・ 先着5院限定</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-2xl mx-auto">
+            <div class="text-center mb-14">
+                <p class="accent-pink font-medium text-sm mb-2">よくあるご質問</p>
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-gray-800">導入前の疑問にお答えします</h2>
+            </div>
+
+            <div class="space-y-3">
+                <details class="group bg-accent-pink-light rounded-xl overflow-hidden">
+                    <summary class="flex items-center justify-between p-5 cursor-pointer">
+                        <span class="font-medium text-gray-800 text-sm sm:text-base pr-4">既存の予約システム（ホットペッパーなど）と一緒に使えますか？</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-5 pb-5 text-gray-500 text-sm leading-relaxed">はい、そのまま併用できます。KIKUは「サイトからの問い合わせ」を予約に変える追加の入口です。既存システムはそのまま残していただいて大丈夫です。</div>
+                </details>
+
+                <details class="group bg-accent-pink-light rounded-xl overflow-hidden">
+                    <summary class="flex items-center justify-between p-5 cursor-pointer">
+                        <span class="font-medium text-gray-800 text-sm sm:text-base pr-4">施術メニューが200種類以上あるのですが大丈夫ですか？</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-5 pb-5 text-gray-500 text-sm leading-relaxed">問題ありません。初期設定時に施術メニュー・料金・よくある質問をAIに学習させます。患者様の悩みに応じて、最適な施術を自然な流れでご案内します。</div>
+                </details>
+
+                <details class="group bg-accent-pink-light rounded-xl overflow-hidden">
+                    <summary class="flex items-center justify-between p-5 cursor-pointer">
+                        <span class="font-medium text-gray-800 text-sm sm:text-base pr-4">患者様の情報は安全に管理されますか？</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-5 pb-5 text-gray-500 text-sm leading-relaxed">会話データは暗号化して保管し、貴院のみがアクセスできます。そもそも予約確定まで個人情報の入力を求めない設計なので、取得する情報は最小限です。</div>
+                </details>
+
+                <details class="group bg-accent-pink-light rounded-xl overflow-hidden">
+                    <summary class="flex items-center justify-between p-5 cursor-pointer">
+                        <span class="font-medium text-gray-800 text-sm sm:text-base pr-4">導入にどのくらい時間がかかりますか？</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-5 pb-5 text-gray-500 text-sm leading-relaxed">最短で翌営業日に稼働可能です。サイトにタグを1行追加するだけなので、IT担当の方がいなくても導入できます。会話フローの初期設定はこちらで行います。</div>
+                </details>
+
+                <details class="group bg-accent-pink-light rounded-xl overflow-hidden">
+                    <summary class="flex items-center justify-between p-5 cursor-pointer">
+                        <span class="font-medium text-gray-800 text-sm sm:text-base pr-4">トライアル後に勝手に課金されませんか？</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-5 pb-5 text-gray-500 text-sm leading-relaxed">されません。トライアル終了後、ご継続いただける場合のみ料金プランをご案内します。クレジットカードの事前登録も不要です。</div>
+                </details>
+
+                <details class="group bg-accent-pink-light rounded-xl overflow-hidden">
+                    <summary class="flex items-center justify-between p-5 cursor-pointer">
+                        <span class="font-medium text-gray-800 text-sm sm:text-base pr-4">リスクや副作用の説明もBotが対応できますか？</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-5 pb-5 text-gray-500 text-sm leading-relaxed">はい。貴院が公開している施術ごとのリスク・副作用情報をAIに学習させ、質問があった際に正確にお伝えします。医療広告ガイドラインに沿った表現で案内します。</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-10 px-4 border-t border-gray-100">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 bg-accent-pink rounded-full flex items-center justify-center">
+                    <span class="text-white font-semibold text-xs">K</span>
+                </div>
+                <span class="font-semibold text-gray-800">KIKU</span>
+                <span class="text-gray-400 text-xs ml-2">予約獲得チャットBot</span>
+            </div>
+            <p class="text-gray-400 text-xs">© 2025 KIKU. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+
+</body></html>
