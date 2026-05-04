@@ -352,7 +352,8 @@
             <p class="text-gray-400 text-sm mb-10">2週間の無料トライアルで、問い合わせ数の変化を実感してください。</p>
 
             <div class="bg-white rounded-lg p-8 max-w-sm mx-auto">
-                <form action="#" method="POST" class="space-y-4">
+                <form name="accounting-trial" netlify action="/" method="POST" class="space-y-4">
+                    <input type="hidden" name="form-name" value="accounting-trial">
                     <input type="text" placeholder="事務所名" class="w-full px-4 py-3 border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
                     <input type="text" placeholder="ご担当者名" class="w-full px-4 py-3 border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
                     <input type="email" placeholder="メールアドレス" class="w-full px-4 py-3 border border-gray-200 text-gray-700 placeholder-gray-300 text-sm focus:outline-none focus:border-gray-400 transition">
@@ -440,4 +441,7 @@
 
 
 
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+  data-cf-beacon='{"token": "YOUR_CF_TOKEN_HERE"}'></script>
 </body></html>
