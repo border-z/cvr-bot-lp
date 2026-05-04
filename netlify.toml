@@ -1,2 +1,17 @@
 [build]
   publish = "."
+
+[[redirects]]
+  from = "/accounting-firm"
+  to = "/accounting-firm.html"
+  status = 200
+
+[[redirects]]
+  from = "/detective-agency"
+  to = "/detective-agency.html"
+  status = 200
+
+[[redirects]]
+  from = "/cosmetic-medical"
+  to = "/cosmetic-medical.html"
+  status = 200
